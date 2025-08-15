@@ -1,0 +1,31 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Storybook 기본 배경색 변경 - 더 강력한 선택자 */
+html,
+body {
+  background: #f5f5f5 !important;
+}
+
+/* Storybook preview 영역 배경색 변경 */
+#storybook-preview-wrapper,
+#storybook-panel-root,
+.storybook-preview-wrapper,
+.storybook-panel-root,
+[data-is-storybook="true"] {
+  background: #f5f5f5 !important;
+}
+
+/* Storybook 메인 컨테이너들 */
+.storybook-main,
+.storybook-preview,
+.storybook-canvas {
+  background: #f5f5f5 !important;
+}
+
+/* 추가적인 Storybook 요소들 */
+div[role="main"],
+main {
+  background: #f5f5f5 !important;
+}
