@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-
+import React from "react";
 import AdvancedCard from "./AdvancedCard";
 import { expect, userEvent, within } from "storybook/internal/test";
 
@@ -9,6 +9,22 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  decorators: [
+    (Story, ctx) => {
+      const [isLiked, setIsLiked] = React.useState(ctx.args.isLiked);
+      const [isBookmarked, setIsBookmarked] = React.useState(
+        ctx.args.isBookmarked
+      );
+      const args = {
+        ...ctx.args,
+        isLiked,
+        isBookmarked,
+        onLike: () => setIsLiked((v) => !v),
+        onBookmark: () => setIsBookmarked((v) => !v),
+      };
+      return React.createElement(Story as any, { ...ctx, args });
+    },
+  ],
   tags: ["autodocs"],
 } satisfies Meta<typeof AdvancedCard>;
 
@@ -77,17 +93,18 @@ const WithBookmark: Story = {
     },
     likes: 100,
     isLiked: false,
-    isBookmarked: true,
+    isBookmarked: false,
     onLike: () => {},
     onBookmark: () => {},
     onShare: () => {},
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const bookmarkButton = canvas.getByRole("button", { name: /북마크/i });
-    await expect(bookmarkButton).toBeInTheDocument();
-    await userEvent.click(bookmarkButton);
-    await expect(bookmarkButton).toHaveClass("text-blue-500 fill-current");
+    const bookmarkBtn = canvas.getByRole("button", { name: /북마크/i });
+    await expect(bookmarkBtn).toBeInTheDocument();
+    await userEvent.click(bookmarkBtn);
+    const bookmarkBtnIcon = bookmarkBtn.querySelector("svg");
+    await expect(bookmarkBtnIcon).toHaveClass("text-blue-500", "fill-current");
   },
 };
 
@@ -105,7 +122,7 @@ const WithLikes: Story = {
       date: "2024-01-15",
     },
     likes: 10000,
-    isLiked: true,
+    isLiked: false,
     isBookmarked: false,
     onLike: () => {},
     onBookmark: () => {},
@@ -113,10 +130,11 @@ const WithLikes: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const likeButton = canvas.getByRole("button", { name: /좋아요/i });
-    await expect(likeButton).toBeInTheDocument();
-    await userEvent.click(likeButton);
-    await expect(likeButton).toHaveClass("text-red-500 fill-current");
+    const likeBtn = canvas.getByRole("button", { name: /좋아요/i });
+    await expect(likeBtn).toBeInTheDocument();
+    await userEvent.click(likeBtn);
+    const likeBtnIcon = likeBtn.querySelector("svg");
+    await expect(likeBtnIcon).toHaveClass("text-red-500", "fill-current");
   },
 };
 

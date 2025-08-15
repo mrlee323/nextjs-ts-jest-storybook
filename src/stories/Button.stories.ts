@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import { within, userEvent, expect } from "@storybook/test";
 
 import { fn } from "storybook/test";
 
@@ -24,14 +25,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary: Story = {
-  args: {
-    primary: true,
-    label: "Button",
-  },
-};
 
 export const Secondary: Story = {
   args: {
@@ -68,4 +61,18 @@ export const LongText: Story = {
     size: "medium",
     primary: true,
   },
+};
+
+// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
+export const Primary: Story = {
+  args: {
+    primary: true,
+    label: "Button",
+  },
+};
+
+Primary.play = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.click(canvas.getByRole("button"));
+  await expect(canvas.getByRole("button")).toBeInTheDocument();
 };

@@ -43,7 +43,10 @@ const AdvancedCard: React.FC<AdvancedCardProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="animate-pulse w-full max-w-md bg-white p-3">
+      <div
+        className="animate-pulse w-full max-w-md bg-white p-3"
+        aria-label="로딩 중..."
+      >
         {/* 헤더 스켈레톤 */}
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
@@ -102,7 +105,10 @@ const AdvancedCard: React.FC<AdvancedCardProps> = ({
   }
 
   return (
-    <div className="w-full min-w-[300px] md:w-[400px] flex flex-col bg-white">
+    <div
+      className="w-full min-w-[300px] md:w-[400px] flex flex-col bg-white"
+      aria-label={title}
+    >
       {/* 작성자 정보 */}
       <div className="w-full flex items-center gap-3 p-3">
         <img
@@ -164,7 +170,6 @@ const AdvancedCard: React.FC<AdvancedCardProps> = ({
                 ? "text-blue-500 fill-current"
                 : "text-gray-400 hover:text-blue-300"
             }`}
-            onClick={onBookmark}
           />
         </button>
       </div>
